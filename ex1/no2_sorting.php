@@ -15,7 +15,7 @@
         .result {
             margin-top: 20px;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 5px;     
         }
 
         h1 {
@@ -59,16 +59,16 @@
 
     <form method="post">
         <label for="nums1">Enter the first array (nums1):</label><br>
-        <input type="text" id="nums1" name="nums1" placeholder="e.g., 1,2,3,0,0,0"><br>
+        <input type="text" id="nums1" name="nums1" placeholder="e.g., 1,2,3,0,0,0" required><br>
 
-        <label for="m">Number of elements in nums2 (m):</label><br>
-        <input type="number" id="m" name="m" placeholder="e.g., 1"><br>
+        <label for="m">Number of valid elements in nums1 (m):</label><br>
+        <input type="number" id="m" name="m" placeholder="e.g., 3" required><br>
 
         <label for="nums2">Enter the second array (nums2):</label><br>
-        <input type="text" id="nums2" name="nums2" placeholder="e.g., 2,5,6"><br>
+        <input type="text" id="nums2" name="nums2" placeholder="e.g., 2,5,6" required><br>
 
-        <label for="n">Number of elemnts in nums2 (n):</label><br>
-        <input type="number" id="n" name="n" placeholder="e.g., 1"><br>
+        <label for="n">Number of valid elements in nums2 (n):</label><br>
+        <input type="number" id="n" name="n" placeholder="e.g., 3" required><br>
 
         <input type="submit" value="Merge Arrays">
     </form>
@@ -76,48 +76,60 @@
     <?php
     // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        function merge(&$nums1, $m, $nums2, $n)
-        {
-            $x = $m - 1; // Start from the end of nums1
-            $y = $n - 1; // Start from the end of nums2
-            $z = $m + $n - 1; // End position in nums1
+        function merge(&$nums1, $m, $nums2, $n) {
+            // Indices for nums1 and nums2
+            $i = 0; // Pointer for nums1
+            $j = 0; // Pointer for nums2
+            $merged = []; // Resultant merged array
 
-            // Merge arrays from the back to avoid overwriting
-            while ($x >= 0 && $y >= 0) {
-                if ($nums1[$x] > $nums2[$y]) {
-                    $nums1[$z] = $nums1[$x];
-                    $x--;
+            // Merge while there are elements in both arrays
+            while ($i < $m && $j < $n) {
+                if ($nums1[$i] <= $nums2[$j]) {
+                    $merged[] = $nums1[$i];
+                    $i++;
                 } else {
-                    $nums1[$z] = $nums2[$y];
-                    $y--;
+                    $merged[] = $nums2[$j];
+                    $j++;
                 }
-                $z--;
             }
 
-            // If nums2 still has elements, add them
-            while ($y >= 0) {
-                $nums1[$z] = $nums2[$y];
-                $y--;
-                $z--;
+            // If there are remaining elements in nums1
+            while ($i < $m) {
+                $merged[] = $nums1[$i];
+                $i++;
             }
+
+            // If there are remaining elements in nums2
+            while ($j < $n) {
+                $merged[] = $nums2[$j];
+                $j++;
+            }
+
+            // Replace nums1 with merged result
+            $nums1 = $merged;
         }
 
         // Get the values from the form
         $nums1_input = explode(',', $_POST['nums1']);
         $nums1 = array_map('intval', $nums1_input);
-        $m = intval($_POST['m']);
+        $m = intval($_POST['m']); // Number of valid elements in nums1
 
         $nums2_input = explode(',', $_POST['nums2']);
         $nums2 = array_map('intval', $nums2_input);
-        $n = intval($_POST['n']);
+        $n = intval($_POST['n']); // Number of valid elements in nums2
+
+        // Sort both arrays before merging
+        sort($nums1);
+        sort($nums2);
 
         // Call the merge function
         merge($nums1, $m, $nums2, $n);
 
         // Output the merged result
-        echo '<strong>Merged Array:</strong> ' . implode(', ', $nums1);
+        echo '<strong>Merged Array:</strong> ' . implode(', ', $nums1) ;
     }
     ?>
+
 </body>
 
 </html>

@@ -5,7 +5,7 @@ class Student {
     public $age; // This will hold a formatted string for age
     public $gpa;
     public $isStudent;
-    private $birthDate; // Store the birth date privately
+    public $birthDate; // Store the birth date privately
 
     function __construct($name = "Derick Norlan", $sex = "Male", $birthDate = "2005-10-16", $gpa = 3.85, $isStudent = true) {
         $this->name = $name;
@@ -17,7 +17,7 @@ class Student {
     }
 
     // Method to calculate age in years, months, and days
-    private function calculateAge() {
+    public function calculateAge() {
         $birthDate = new DateTime($this->birthDate); // Create a DateTime object for birth date
         $currentDate = new DateTime(); // Current date
         $ageDifference = $birthDate->diff($currentDate); // Calculate the difference

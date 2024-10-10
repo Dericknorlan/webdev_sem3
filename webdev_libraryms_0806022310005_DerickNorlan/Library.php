@@ -51,7 +51,7 @@ function index()
         function input(){
             let jumlah = window.prompt("Mau berapa buku?", 1);
             if(!(jumlah >= 1 && jumlah <= 100)){
-                alert("Salah brow");
+                alert("jumlah harus lebih dari 1 dan tidak lebih dari 100");
             } else {
                 window.location.href = "Library.php?page=input&jumlah="+jumlah;
             }
